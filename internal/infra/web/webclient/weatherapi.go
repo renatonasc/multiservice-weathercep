@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"renatonasc/multiservice-weathercep/internal/entity"
 )
 
@@ -25,7 +26,10 @@ func NewWeatherAPIClient() *WeatherAPIClient {
 func (w *WeatherAPIClient) GetWeatherByLoctaion(location string) (*entity.WeaterRespose, error) {
 
 	context := context.Background()
-	url := "https://api.weatherapi.com/v1/current.json?key=a9037ed280dd4f29940155900241807" + "&q=" + location + "&aqi=no"
+	encodedString := url.QueryEscape(location)
+	url := "https://api.weatherapi.com/v1/current.json?key=a9037ed280dd4f29940155900241807" + "&q=" + encodedString + "&aqi=no"
+	log.Println("Service B - URL: ", url)
+	//https://api.weatherapi.com/v1/current.json?key=a9037ed280dd4f29940155900241807&q=recife&aqi=no
 	req, err := http.NewRequestWithContext(context, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err

@@ -44,6 +44,10 @@ Após executar o projeto, você pode visualizar os traces gerados acessando a in
 
 Navegue pela interface do Zipkin para explorar os traces distribuídos gerados pelas interações entre serviceA e serviceB, bem como as chamadas para APIs externas.
 
+## Visualizando a execução
+
+Na pasta media/ foi adicionado um video com a execução da chamada e um segundo video com a visualização dos traces
+
 ## Conclusão
 Este sistema de busca de clima demonstra a utilização de microserviços para construção de aplicações distribuídas, com foco na observabilidade e monitoramento através do OpenTelemetry e Zipkin. A execução via Docker Compose facilita o deploy e a gestão dos componentes envolvidos. 
 
