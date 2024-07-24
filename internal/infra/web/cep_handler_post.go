@@ -49,19 +49,23 @@ func (h *CepHandlerPost) GetWeatherByCep(w http.ResponseWriter, r *http.Request)
 	log.Println("Service A - CEP informado: ", cep)
 	var expReg = regexp.MustCompile(`^\d{5}-?\d{3}$`)
 	if !expReg.MatchString(cep) {
-		http.Error(w, "Invalid cep formata", http.StatusUnprocessableEntity)
+		http.Error(w, "CEP deve conter 8 digitos", http.StatusUnprocessableEntity)
 		return
 	}
 
 	serviceBClient := webclient.NewSeviceBClient()
 	weather, err := serviceBClient.GetWeatherByCep(cep, ctx)
 	if err != nil {
-
-		if httpErr, ok := err.(interface{ StatusCode() int }); ok {
-			http.Error(w, err.Error(), httpErr.StatusCode())
-		} else {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+		if err.Error() == "CEP deve conter 8 digitos" {
+			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
+			return
 		}
+		if err.Error() == "CEP não encontrado" {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

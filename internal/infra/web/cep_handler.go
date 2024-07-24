@@ -48,11 +48,12 @@ func (h *CepHandler) GetWeatherByCep(w http.ResponseWriter, r *http.Request) {
 	weather, err := getWeatherByCepUsecase.Execute(cep)
 	if err != nil {
 		if err.Error() == "CEP deve conter 8 digitos" {
-			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
+			http.Error(w, "CEP deve conter 8 digitos", http.StatusUnprocessableEntity)
 			return
 		}
 		if err.Error() == "CEP não encontrado" {
-			http.Error(w, err.Error(), http.StatusNotFound)
+			log.Println("Service B - return erro : CEP não encontrado: ", cep)
+			http.Error(w, "CEP não encontrado", http.StatusNotFound)
 			return
 		}
 
